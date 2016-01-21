@@ -1,0 +1,4 @@
+archbox/out/*
+archbox/work/*
+!archbox/out/.gitkeep
+!archbox/work/.gitkeep
