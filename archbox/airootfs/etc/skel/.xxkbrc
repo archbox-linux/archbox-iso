@@ -1,0 +1,27 @@
+XXkb.controls.add_when_start:	yes
+XXkb.controls.add_when_create:	yes
+XXkb.controls.add_when_change:	no
+XXkb.controls.focusout:		no
+XXkb.controls.two_state:	no
+#XXkb.controls.button_delete:	yes
+#XXkb.controls.button_delete_and_forget:	no
+#XXkb.controls.mainwindow_delete:	no
+XXkb.group.base:		1
+XXkb.group.alt:			2
+XXkb.bell.enable:		no
+XXkb.button.enable:		no
+XXkb.ignore.reverse:		no
+XXkb.mousebutton.1.reverse:	no
+XXkb.mousebutton.3.reverse:	no
+
+
+XXkb.mainwindow.enable:		yes
+XXkb.mainwindow.label.enable:	no
+XXkb.mainwindow.appicon:	yes
+XXkb.mainwindow.type:		tray
+XXkb.mainwindow.geometry:	15x10+0+0
+XXkb.mainwindow.image.1:	us.xpm
+XXkb.mainwindow.image.2:	ua.xpm
+XXkb.mainwindow.image.3:	ru.xpm
+XXkb.mainwindow.image.4:
+XXkb.image.path:		/home/glumoff/.icons/flags

@@ -1,0 +1,33 @@
+compton --config ~/.config/compton.conf &
+
+# panel
+(sleep 1s && tint2) &
+
+# Set wallpaper
+nitrogen --restore &
+
+plank &
+
+# Enable as required
+#xbacklight -set 100 &
+#/usr/bin/synclient TouchpadOff=1 &
+sleep 1 ; setxkbmap -layout 'us,ua,ru' -option "grp:caps_toggle,grp_led:caps,grp_led:scroll"
+sleep 1 ; xxkb &
+#sleep 1 ; xset -dpms &
+#sleep 1 ; xset s noblank &
+#sleep 1 ; xset s off &
+
+# Networking system tray applet
+(sleep 3 && nm-applet) &
+
+# Volume control
+(sleep 3 && volumeicon) &
+
+# Onscreen system stats
+(sleep 2 && conky) &
+
+(sleep 1 && clipit) &
+
+/usr/bin/lxpolkit &
+
+/usr/bin/pamac-tray &
