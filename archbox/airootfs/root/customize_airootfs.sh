@@ -13,7 +13,13 @@ chmod 700 /root
 
 USER=archbox
 
+# create user
 ! id $USER && useradd -m -p "" -g users -G "adm,audio,floppy,log,network,rfkill,scanner,storage,optical,power,wheel" -s /usr/bin/zsh $USER
+# set user password (same as username)
+echo "$USER:$USER" | chpasswd
+# add permissions to execute as root to wheel group (asking a password)
+! grep "^[[:space:]]*%wheel[[:space:]]ALL=(ALL)[[:space:]].*ALL" /etc/sudoers && echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+
 
 sed -i 's/#\(PermitRootLogin \).\+/\1yes/' /etc/ssh/sshd_config
 sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist
