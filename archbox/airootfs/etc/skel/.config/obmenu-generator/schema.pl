@@ -31,7 +31,7 @@ our $SCHEMA = [
 
     #          COMMAND                 LABEL                ICON
     {item => ['pcmanfm',        'Файловий менеджер',      'folder']},
-    {item => ["$terminal",             'Термінал',          'lxterminal']},
+    {item => ["$terminal",             'Термінал',          'terminal-tango']},
     {item => ['firefox',  'Firefox',       'firefox']},
     {item => ['chromium',  'Chromium',       'chromium']},
     {item => ['gmrun',             'Запустити...',       'system-run']},

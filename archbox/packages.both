@@ -120,7 +120,6 @@ lxappearance-obconf
 lxinput
 lxrandr
 lxsession
-lxterminal
 lzop
 make
 man-db
@@ -186,6 +185,7 @@ remmina
 rfkill
 rp-pppoe
 rsync
+sakura
 sed
 shadow
 shutter
