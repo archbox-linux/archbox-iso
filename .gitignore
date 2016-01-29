@@ -2,6 +2,5 @@ archbox/out/*
 archbox/work/*
 !archbox/out/.gitkeep
 !archbox/work/.gitkeep
-customrepo-build
 customrepo/*
-customrepo/.gitkeep
+!customrepo/.gitkeep
