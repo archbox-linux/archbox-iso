@@ -8,5 +8,5 @@ chown -R root:root $ROOT_DIR/archbox/*
 # reset work dir
 rm -v $ROOT_DIR/archbox/work/build.make_*
 
-source ./build-customrepo.sh
+$ROOT_DIR/scripts/build-customrepo.sh
 
