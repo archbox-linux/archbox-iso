@@ -1,0 +1,53 @@
+1.  choose device for new root
+
+2.  mount it to /mnt
+
+3.  copy everything in the Live environment to the new root:
+    time cp -ax / /mnt
+
+4.  copy the kernel image to the new root, in order to keep the integrity of the new system:
+    cp -vaT /run/archiso/bootmnt/arch/boot/$(uname -m)/vmlinuz /mnt/boot/vmlinuz-linux
+
+5.  generate a fstab as described in (https://wiki.archlinux.org/index.php/Beginners%27_guide#Generate_an_fstab):
+    genfstab -U /mnt > /mnt/etc/fstab
+
+6.  chroot into your newly installed system:
+    arch-chroot /mnt /bin/bash
+
+7.  get rid of the trace of a Live environment
+
+    7.1 Restore the configuration of journald:
+        sed -i 's/Storage=volatile/#Storage=auto/' /etc/systemd/journald.conf
+
+    7.2 Remove special udev rule that starts the dhcpcd automatically:
+        rm /etc/udev/rules.d/81-dhcpcd.rules
+
+    7.3 Disable and remove the services created by archiso:
+        rm /etc/systemd/system/getty@tty1.service.d/autologin.conf
+        rm /root/{.automated_script.sh,.zlogin}
+        rm /etc/mkinitcpio-archiso.conf
+        rm -r /etc/initcpio
+
+8.  ? Create an initial ramdisk environment:
+    mkinitcpio -p linux
+
+9.  Locale
+
+10. Time
+
+11. Install a boot loader
+
+12. Configure the network
+
+    12.1    Hostname
+    12.2    Wired
+    12.3    Wireless
+
+13. Set the root password with:
+    passwd
+
+14. Unmount the partitions and reboot (with prompt):
+    umount -R /mnt
+    reboot
+
+    
