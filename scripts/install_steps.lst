@@ -12,7 +12,7 @@
     genfstab -U /mnt > /mnt/etc/fstab
 
 6.  chroot into your newly installed system:
-    arch-chroot /mnt /bin/bash
+	arch-chroot /mnt /bin/bash
 
 7.  get rid of the trace of a Live environment
 

@@ -1,17 +1,19 @@
 #!/usr/bin/bash
 
-DEVICES=`lsblk -lno NAME,FSTYPE,SIZE,LABEL | egrep "(ext(2|3|4)|reiserfs|btrfs|reiser4)"`
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cnt=0
-#for dev in `lsblk -lo NAME,FSTYPE,SIZE,LABEL | egrep "(ext(2|3|4)|reiserfs|btrfs|reiser4)" | grep -o ^[^[:space:]]*`; do
-while read -r dev; do
-    (( cnt++ ))
-    dlgParams+=( "$cnt" "$dev" "off" )
-    #echo "${cnt} \"${dev}\" off";
-done <<< "$DEVICES"
+. "$SCRIPT_DIR/include/utils.sh"
 
-#echo "${dlgParams[@]}"
+ROOT_DEV=$(show_select_devices)
+RES=$?
 
-if [ $cnt -ne 0 ]; then
-    dialog --backtitle "Choose device for new root" --radiolist "Available devices:" 15 40 10  "${dlgParams[@]}"
+if [ "$RES" -ne 0 ]; then
+	echo "Canceled by user. Exiting."
+	exit 1
 fi
+
+if [ "s$ROOT_DEV" = "s" ]; then
+	echo "No target defined. Exiting."
+	exit 2
+fi
+
