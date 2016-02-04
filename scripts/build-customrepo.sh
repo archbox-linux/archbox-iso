@@ -43,11 +43,11 @@ build_package_list() {
         cd "$srcDir"
 
         #temporary fix for pamac-aur
-        if [ "_$srcDir" == "_pamac-aur" ] ; then
-          echo -n "Fixing pamac-aur..."
-          sed -i 's/dabd01fc2315fecd01c85de040bf97f4ba3932343590fa06a95d0a324554d089/749d9d153fbbe5b3709423983a6da6dfafae16a09acf8ccb6d35427f47cb804a/' "PKGBUILD"
-          echo "done!"
-        fi
+        #if [ "_$srcDir" == "_pamac-aur" ] ; then
+        #  echo -n "Fixing pamac-aur..."
+        #  sed -i 's/dabd01fc2315fecd01c85de040bf97f4ba3932343590fa06a95d0a324554d089/749d9d153fbbe5b3709423983a6da6dfafae16a09acf8ccb6d35427f47cb804a/' "PKGBUILD"
+        #  echo "done!"
+        #fi
 
         #build package for 32bit arch
         makechrootpkg -r "$REPO_DIR/chroot/i686" -- -i || exit 1
