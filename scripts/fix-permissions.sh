@@ -7,5 +7,3 @@ sudo chown -R root:root $ROOT_DIR/archbox/*
 
 # reset work dir
 rm -v $ROOT_DIR/archbox/work/build.make_*
-
-#$ROOT_DIR/scripts/build-customrepo.sh

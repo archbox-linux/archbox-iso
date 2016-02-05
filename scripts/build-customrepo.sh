@@ -4,6 +4,8 @@ ROOT_DIR=$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" )
 REPO_DIR="$ROOT_DIR/customrepo"
 ARCH=both
 
+if false; then
+
 if [ ! -d "$REPO_DIR/build" ]; then
   mkdir "$REPO_DIR/build"
 fi
@@ -16,7 +18,7 @@ cat $REPO_DIR/packages-aur.lst | xargs yaourt -G
 echo "copying theme"
 cp -r "$ROOT_DIR/artwork/themes/numix-themes-hreen" .
 
-#check devtools and install it (if needed) to build in clean chroot
+#TODO: check devtools and install it (if needed) to build in clean chroot
 
 if [ ! -d "$REPO_DIR/chroot" ]; then
   mkdir -p "$REPO_DIR/chroot"
@@ -41,13 +43,6 @@ build_package_list() {
       if [ -d "$srcDir" ] && [ -f "$srcDir/PKGBUILD" ] ; then
         echo "Enter to $srcDir"
         cd "$srcDir"
-
-        #temporary fix for pamac-aur
-        #if [ "_$srcDir" == "_pamac-aur" ] ; then
-        #  echo -n "Fixing pamac-aur..."
-        #  sed -i 's/dabd01fc2315fecd01c85de040bf97f4ba3932343590fa06a95d0a324554d089/749d9d153fbbe5b3709423983a6da6dfafae16a09acf8ccb6d35427f47cb804a/' "PKGBUILD"
-        #  echo "done!"
-        #fi
 
         #build package for 32bit arch
         makechrootpkg -r "$REPO_DIR/chroot/i686" -- -i || exit 1
@@ -98,5 +93,40 @@ cd "$REPO_DIR/i686/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
 cd "$REPO_DIR/x86_64/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
+
+fi
+
+cd "$ROOT_DIR"
+
+# NEW ALGORITM
+# remove [customrepo] unconditionally
+# this is better way because we can insert then in right place (even if it wasn`t there)
+# (customrepo must be the first repo in pacman.conf for higher priority)
+# and also no need separate procedures of inserting and inplace editing
+
+# delete lines from line containing "customrepo" up to first empty line
+sed -i '/customrepo/,/^$/d' ./archbox/pacman.conf
+
+# find all [<string>] sections beginings
+for sec in $( egrep -o "^\[[^]]+]$" ./archbox/pacman.conf ); do
+# get first section ignoring [options] section
+  if [ "s$sec" = "s[options]" ]; then continue; fi
+# define line number of first repo section
+#                            | remove [ and ]        |
+  REPO_LINE=$( echo "${sec}" | sed -E 's/(\[|\])//g' | xargs -I== egrep -on "^\[==\]$" ./archbox/pacman.conf | awk -F ":" '{print $1}' )
+  break;
+done
+
+# insert customrepo section:
+#   [customrepo]
+#   SigLevel = Optional TrustAll
+#   Server = file://<full-path-to-archbox-profile>/customrepo/$arch
+  sed -i "${REPO_LINE}"'i[customrepo]\
+SigLevel = Optional TrustAll \
+Server = file://'"${REPO_DIR}"'/$arch \
+' ./archbox/pacman.conf
+
+
+echo "REPO_LINE=${REPO_LINE}"
 
 echo "DONE!"
