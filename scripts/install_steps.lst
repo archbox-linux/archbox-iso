@@ -4,6 +4,7 @@
 
 3.  copy everything in the Live environment to the new root:
     time cp -ax / /mnt
+    (maybe use rsync for progress showing)
 
 4.  copy the kernel image to the new root, in order to keep the integrity of the new system:
     cp -vaT /run/archiso/bootmnt/arch/boot/$(uname -m)/vmlinuz /mnt/boot/vmlinuz-linux
@@ -37,7 +38,7 @@
 
 11. Install a boot loader
 
-12. Configure the network
+12. Configure the network (maybe no need to configure network?)
 
     12.1    Hostname
     12.2    Wired
@@ -46,7 +47,7 @@
 13. Set the root password with:
     passwd
 
-14. Unmount the partitions and reboot (with prompt):
+14. Unmount the partitions and reboot (with dialog prompt):
     umount -R /mnt
     reboot
 
