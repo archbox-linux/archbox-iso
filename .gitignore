@@ -4,3 +4,4 @@ archbox/work/*
 !archbox/work/.gitkeep
 customrepo/*/*
 !customrepo/.gitkeep
+archbox.sublime-*

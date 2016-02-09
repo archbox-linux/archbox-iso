@@ -4,8 +4,6 @@ ROOT_DIR=$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" )
 REPO_DIR="$ROOT_DIR/customrepo"
 ARCH=both
 
-if false; then
-
 if [ ! -d "$REPO_DIR/build" ]; then
   mkdir "$REPO_DIR/build"
 fi
@@ -93,8 +91,6 @@ cd "$REPO_DIR/i686/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
 cd "$REPO_DIR/x86_64/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
-
-fi
 
 cd "$ROOT_DIR"
 

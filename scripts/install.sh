@@ -16,4 +16,3 @@ if [ "s$ROOT_DEV" = "s" ]; then
 	echo "No target defined. Exiting."
 	exit 2
 fi
-
