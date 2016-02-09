@@ -1,10 +1,13 @@
 #!/usr/bin/bash
 
+if [ "s$( id -u )" = "s0" ]; then
+  echo "You shouldn't run it under root"
+  exit
+fi
+
 ROOT_DIR=$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" )
 REPO_DIR="$ROOT_DIR/customrepo"
 ARCH=both
-
-if false; then
 
 if [ ! -d "$REPO_DIR/build" ]; then
   mkdir "$REPO_DIR/build"
@@ -46,11 +49,15 @@ build_package_list() {
 
         #build package for 32bit arch
         makechrootpkg -r "$REPO_DIR/chroot/i686" -- -i || exit 1
+        # move package to customrepo
+        find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/i686/" \;
         echo "Finished building 32 bit package"
 
         #build package for 64bit arch
         makechrootpkg -r "$REPO_DIR/chroot/x86_64" -- -i || exit 1
-        echo "Finished building 32 bit package"
+        # move package to customrepo
+        find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/x86_64/" \;
+        echo "Finished building 64 bit package"
 
         echo "Return to build dir"
         cd "$REPO_DIR/build"
@@ -73,28 +80,18 @@ if [ "s$ARCH" == "s64" ] || [ "s$ARCH" == "sboth" ] ; then
   fi
 fi
 
-build_package_list "packages-aur.lst"
-build_package_list "packages-local.lst"
-
 #prepare customrepo
 mkdir -p "$REPO_DIR/i686"
 mkdir -p "$REPO_DIR/x86_64"
 
-# copy packages to customrepo
-# *-i686.pkg.tar.xz - to i686
-# *-x86_64.pkg.tar.xz - to x86_64
-# *-any.pkg.tar.xz - to both i686 and x86_64
-find "$REPO_DIR/build" -name "*-i686.pkg.tar.xz" -exec cp {} "$REPO_DIR/i686/" \;
-find "$REPO_DIR/build" -name "*-x86_64.pkg.tar.xz" -exec cp {} "$REPO_DIR/x86_64/" \;
-find "$REPO_DIR/build" -name "*-any.pkg.tar.xz" -exec cp {} "$REPO_DIR/i686/" \;
-find "$REPO_DIR/build" -name "*-any.pkg.tar.xz" -exec cp {} "$REPO_DIR/x86_64/" \;
+build_package_list "packages-aur.lst"
+build_package_list "packages-local.lst"
 
+# add packages to repo db
 cd "$REPO_DIR/i686/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
 cd "$REPO_DIR/x86_64/"
 repo-add ./customrepo.db.tar.gz ./*.pkg.tar.xz
-
-fi
 
 cd "$ROOT_DIR"
 
@@ -122,11 +119,8 @@ done
 #   SigLevel = Optional TrustAll
 #   Server = file://<full-path-to-archbox-profile>/customrepo/$arch
   sed -i "${REPO_LINE}"'i[customrepo]\
-SigLevel = Optional TrustAll \
-Server = file://'"${REPO_DIR}"'/$arch \
+SigLevel = Optional TrustAll\
+Server = file://'"${REPO_DIR}"'/$arch\
 ' ./archbox/pacman.conf
-
-
-echo "REPO_LINE=${REPO_LINE}"
 
 echo "DONE!"
