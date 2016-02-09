@@ -47,6 +47,13 @@ build_package_list() {
         echo "Enter to $srcDir"
         cd "$srcDir"
 
+        #temporary fix for pamac-aur
+        if [ "_$srcDir" == "_pamac-aur" ] ; then
+           echo -n "Fixing pamac-aur architecture..."
+           sed -i "s/arch=('any')/arch=('i686' 'x86_64')/" "PKGBUILD"
+           echo "done!"
+         fi
+
         #build package for 32bit arch
         makechrootpkg -r "$REPO_DIR/chroot/i686" -- -i || exit 1
         # move package to customrepo
