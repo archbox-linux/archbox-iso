@@ -16,3 +16,14 @@ if [ "s$ROOT_DEV" = "s" ]; then
 	echo "No target defined. Exiting."
 	exit 2
 fi
+
+mount_new_root "/dev/$ROOT_DEV" "/mnt/"
+echo $?
+exit
+
+RES=$?
+if [ "$RES" -ne 0 ]; then
+  echo "Failed to mount new root"
+  exit 3
+fi
+
