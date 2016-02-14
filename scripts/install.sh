@@ -17,13 +17,29 @@ if [ "s$ROOT_DEV" = "s" ]; then
 	exit 2
 fi
 
-mount_new_root "/dev/$ROOT_DEV" "/mnt/"
-echo $?
-exit
-
+mount_new_root "/dev/$ROOT_DEV" "/mnt"
 RES=$?
 if [ "$RES" -ne 0 ]; then
   echo "Failed to mount new root"
   exit 3
 fi
 
+copy_to_new_root "/mnt"
+RES=$?
+if [ "$RES" -ne 0 ]; then
+  echo "Failed to copy to new root"
+  exit 4
+fi
+
+# copy the kernel image to the new root, in order to keep the integrity of the new system
+cp -vaT /run/archiso/bootmnt/arch/boot/$(uname -m)/vmlinuz /mnt/boot/vmlinuz-linux
+
+# generate a fstab
+genfstab -U "/mnt" > /mnt/etc/fstab
+
+remove_live_trails "/mnt"
+
+# Create an initial ramdisk environment
+arch-chroot "/mnt" mkinitcpio -p linux
+
+install_grub "/mnt" "$ROOT_DEV"
