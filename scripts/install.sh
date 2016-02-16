@@ -1,45 +1,85 @@
 #!/usr/bin/bash
 
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 . "$SCRIPT_DIR/include/utils.sh"
 
-ROOT_DEV=$(show_select_devices)
-RES=$?
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
 
-if [ "$RES" -ne 0 ]; then
-	echo "Canceled by user. Exiting."
-	exit 1
-fi
+TMPDIR="/tmp/"
+CONFIGNAME="archbox"
+BACKTITLE="Archbox Install"
 
-if [ "s$ROOT_DEV" = "s" ]; then
-	echo "No target defined. Exiting."
-	exit 2
-fi
+#rm ${TMPDIR}${CONFIGNAME}.*
 
-mount_new_root "/dev/$ROOT_DEV" "/mnt"
-RES=$?
-if [ "$RES" -ne 0 ]; then
-  echo "Failed to mount new root"
-  exit 3
-fi
+echo "rm=$?"
 
-copy_to_new_root "/mnt"
-RES=$?
-if [ "$RES" -ne 0 ]; then
-  echo "Failed to copy to new root"
-  exit 4
-fi
+STEP=1
 
-# copy the kernel image to the new root, in order to keep the integrity of the new system
-cp -vaT /run/archiso/bootmnt/arch/boot/$(uname -m)/vmlinuz /mnt/boot/vmlinuz-linux
-
-# generate a fstab
-genfstab -U "/mnt" > /mnt/etc/fstab
-
-remove_live_trails "/mnt"
-
-# Create an initial ramdisk environment
-arch-chroot "/mnt" mkinitcpio -p linux
-
-install_grub "/mnt" "$ROOT_DEV"
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "Archbox Install" \
+    --title "Installation steps" \
+    --clear \
+    --cancel-label "Exit" \
+    --default-item "$STEP" \
+    --menu "" $HEIGHT $WIDTH 8 \
+    "1" "Select drive" \
+    "2" "Personal information" \
+    "3" "Locale" \
+    "4" "Timezone" \
+    "5" "Bootloader" \
+    "6" "Install" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "Installation terminated."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Installation aborted." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Installation terminated."
+      ;;
+    1 )
+      select_device "${STEP}"
+      ROOT_DEV=$( get_saved_params "1" )
+      if [ "s$ROOT_DEV" = "s" ]; then
+        #echo "No target defined. Exiting."
+        continue
+      fi
+      STEP=2
+      ;;
+    2 )
+      if [ $STEP -lt 2 ]; then continue; fi
+      select_user_params "2"
+      RES=$?
+      if [ $RES -eq 0 ]; then
+        if check_user_params ; then
+          STEP=3
+        fi
+      fi
+      #display_result "${RES}"
+      ;;
+    3 )
+      if [ $STEP -ne 3 ]; then continue; fi
+      select_language "3"
+      display_result "$( get_saved_params "3" )"
+      STEP=4
+      ;;
+  esac
+done

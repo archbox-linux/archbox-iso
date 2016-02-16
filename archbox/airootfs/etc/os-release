@@ -2,6 +2,6 @@ NAME="ArchBox Linux"
 ID=arch
 PRETTY_NAME="ArchBox Linux"
 ANSI_COLOR="0;32"
-HOME_URL=""
+HOME_URL="https://github.com/glumoff/archbox"
 SUPPORT_URL=""
 

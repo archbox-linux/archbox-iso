@@ -12,12 +12,12 @@ own_window_colour black
 double_buffer yes
 minimum_size 1 1
 maximum_width 240
-draw_shades no
+draw_shades yes
 draw_outline no
 draw_borders no
 draw_graph_borders no
 default_color white
-default_shade_color 000000
+default_shade_color 333333
 default_outline_color d9d7d6
 alignment tl
 gap_x 12
