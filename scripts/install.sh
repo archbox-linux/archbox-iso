@@ -73,13 +73,37 @@ while true; do
           STEP=3
         fi
       fi
-      #display_result "${RES}"
       ;;
     3 )
-      if [ $STEP -ne 3 ]; then continue; fi
+      if [ $STEP -lt 3 ]; then continue; fi
       select_language "3"
-      display_result "$( get_saved_params "3" )"
-      STEP=4
+      if [ $RES -eq 0 ]; then
+        STEP=4
+      fi
+      ;;
+    4 )
+      if [ $STEP -lt 4 ]; then continue; fi
+      select_timezone "4"
+      if [ $RES -eq 0 ]; then
+        TZ=$( get_saved_params "4" )
+        if [ "s$TZ" != "s" ]; then
+          STEP=5
+        fi
+      fi
+      ;;
+    5 )
+      if [ $STEP -lt 5 ]; then continue; fi
+      select_bootloader "5"
+      #if [ $RES -eq 0 ]; then
+        STEP=6
+      #fi
+      ;;
+    6 )
+      if [ $STEP -lt 6 ]; then continue; fi
+      confirm_install "5"
+      if [ $RES -eq 0 ]; then
+        do_install
+      fi
       ;;
   esac
 done

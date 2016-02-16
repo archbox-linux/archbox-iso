@@ -221,19 +221,69 @@ select_language() {
     ${LOCALES_LIST[@]} \
    2>"${TMPDIR}${CONFIGNAME}.${SFX}"
 
-  CHOSEN_LOCALES_LIST=( $( get_saved_params "${SFX}" | awk '{print $1 " off"}' ) )
+  RES=$?
+
+  CHOSEN_LOCALES_LIST=( $( get_saved_params "${SFX}" | sed 's/en_US.UTF-8/& on/' | sed 's/^[^[:space:]]*$/& off/' ) )
   exec 3>&1
   DEF_LOCALE=$(  dialog \
       --backtitle "${BACKTITLE}" \
       --title "Default locale" \
       --no-items \
       --radiolist "" \
-  10 50 10 \
+  15 50 15 \
     ${CHOSEN_LOCALES_LIST[@]} \
     2>&1 1>&3 )
   exec 3>&-
 
   sed -i "s/${DEF_LOCALE}/+&/" "${TMPDIR}${CONFIGNAME}.${SFX}"
 
+  let RES=RES+$?
+
   clear
+
+  return $RES
+}
+
+select_timezone() {
+  SFX=$1
+
+  LOCALES_LIST=( $( timedatectl list-timezones | awk '{print $1 " off"}') )
+
+  dialog \
+      --backtitle "${BACKTITLE}" \
+      --title "Timezone" \
+      --visit-items \
+      --no-items \
+      --radiolist "" \
+  25 50 20 \
+    ${LOCALES_LIST[@]} \
+   2>"${TMPDIR}${CONFIGNAME}.${SFX}"
+  
+  RES=$?
+
+  clear
+
+  return $RES
+}
+
+select_bootloader() {
+  SFX=$1
+
+  dialog \
+      --backtitle "${BACKTITLE}" \
+      --title "Bootloader" \
+      --yesno "Would you like to install Grub bootloader?" 0 0
+  
+  RES=$?
+  echo $RES > "${TMPDIR}${CONFIGNAME}.${SFX}"
+  clear
+
+  return $RES
+}
+
+confirm_install() {
+  #dialog \
+  #    --backtitle "${BACKTITLE}" \
+  #    --title "Bootloader" \
+  #    --yesno "Would you like to install Grub bootloader?" 0 0
 }
