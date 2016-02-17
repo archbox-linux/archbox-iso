@@ -106,6 +106,9 @@ remove_live_trails() {
 
   NEWROOT_MOUNT_DIR=$1
 
+  # remove live user
+  userdel -rf --root "${NEWROOT_MOUNT_DIR}" "archbox"
+
   # Restore the configuration of journald:
   sed -i 's/Storage=volatile/#Storage=auto/' "${NEWROOT_MOUNT_DIR}/etc/systemd/journald.conf"
 
@@ -127,7 +130,6 @@ install_grub() {
   arch-chroot "${NEWROOT_MOUNT_DIR}" grub-install --target=i386-pc --recheck "${BOOT_DISK}"
 
   arch-chroot "${NEWROOT_MOUNT_DIR}" grub-mkconfig -o /boot/grub/grub.cfg
-
 }
 
 select_user_params() {
@@ -258,7 +260,7 @@ select_timezone() {
   25 50 20 \
     ${LOCALES_LIST[@]} \
    2>"${TMPDIR}${CONFIGNAME}.${SFX}"
-  
+
   RES=$?
 
   clear
@@ -273,17 +275,220 @@ select_bootloader() {
       --backtitle "${BACKTITLE}" \
       --title "Bootloader" \
       --yesno "Would you like to install Grub bootloader?" 0 0
-  
+
   RES=$?
-  echo $RES > "${TMPDIR}${CONFIGNAME}.${SFX}"
+  if [ $RES -eq 0 ]; then
+    dev=$( get_saved_params "1" )
+    BOOT_DISK=$( lsblk -plno PKNAME,NAME | grep "${dev}" | awk '{print $1}' )
+  else
+    BOOT_DISK=0
+  fi
+  echo "${BOOT_DISK}" > "${TMPDIR}${CONFIGNAME}.${SFX}"
   clear
 
   return $RES
 }
 
+format_all_params() {
+  # device
+  dev=$( get_saved_params "1" )
+  # user_params
+  userParams=$( get_saved_params "2" )
+  i=0
+  while read line; do
+    userParams[$i]="$line"
+    (( i++ ))
+  done < <( get_saved_params "2" )
+  comp=${userParams[0]}
+  user=${userParams[1]}
+  psw=${userParams[2]}
+  psw2=${userParams[3]}
+
+  # locale
+  localesList=$( get_saved_params "3" | sed 's/^+//' | tr "\n" ", " | sed 's/,$//' )
+  defLocale=$( get_saved_params "3" | awk '/^+/{print $0}' | sed 's/^+//')
+  # timezone
+  tz=$( get_saved_params "4" )
+  # bootloader
+  BOOT_DISK=$( get_saved_params "5" )
+  if [ "$BOOT_DISK" = "0" ]; then
+    useGrub="no"
+  else
+    useGrub="yes (to ${BOOT_DISK})"
+  fi
+
+  echo "Just finished to collect settings for installation.
+
+Settings to be apllied are:
+
+Root device:          ${dev:-"n/a"}
+Computer name:        ${comp:-"n/a"}
+Username:             ${user:-"n/a"}
+Locales to generate:  ${localesList:-"n/a"}
+Default locale:       ${defLocale:-"n/a"}
+Timezone:             ${tz:-"n/a"}
+Install GRUB2:        ${useGrub:-"n/a"}
+
+
+Do you want to proceed with install?"
+}
+
 confirm_install() {
-  #dialog \
-  #    --backtitle "${BACKTITLE}" \
-  #    --title "Bootloader" \
-  #    --yesno "Would you like to install Grub bootloader?" 0 0
+  MSG_TEXT="$( format_all_params )"
+  dialog \
+    --backtitle "${BACKTITLE}" \
+    --no-collapse \
+    --cr-wrap \
+    --title "Confirm settings" \
+    --yesno "${MSG_TEXT}" 0 0
+  return $?
+}
+
+do_reboot() {
+    dialog \
+    --backtitle "${BACKTITLE}" \
+    --no-collapse \
+    --cr-wrap \
+    --title "Reboot now?" \
+    --yesno "${MSG_TEXT}" 0 0
+  if [ $? -eq 0 ]; then
+    reboot
+  fi
+}
+
+set_user_params() {
+  comp=$1
+  user=$2
+  psw=$3
+
+  echo "Setting computer name..."
+  echo -n "${comp}" > "/etc/hostname"
+
+  # ------ Creating user ------
+  ! id $user && useradd -m -p "" -g users -G "adm,audio,floppy,log,network,rfkill,scanner,storage,optical,power,wheel" -s /usr/bin/zsh $user
+
+  # set user password
+  echo "$user:$psw" | chpasswd
+
+
+  # disable slim autologin
+  sed "s/^default_user.*$/#default_user\t\t$user}/" /etc/slim.conf
+}
+
+set_lang_settings() {
+  # assuming we are under chroot
+
+  # get locale settings
+  localesList=$( get_saved_params "3" | sed 's/^+//' )
+  defLocale=$( get_saved_params "3" | awk '/^+/{print $0}' | sed 's/^+//' )
+
+  # enable every chosen locale
+  for loc in $localesList; do
+    sed -i "s/^#${loc}/${loc}/" /etc/locale.gen
+  done
+  # generate enabled locales
+  locale-gen
+
+  # set default in /etc/locale.conf
+  # LC_NUMERIC is set to en_US.UTF-8 to prevent
+  echo 'LANG="uk_UA.UTF-8"' >/etc/locale.conf
+  echo 'LC_NUMERIC="en_US.UTF-8"' >>/etc/locale.conf
+}
+
+
+do_install() {
+
+  #--------------------------------
+  # ONCE AGAIN READ ALL SETTINGS
+  #--------------------------------
+  # device
+  dev=$( get_saved_params "1" )
+  # user_params
+  userParams=$( get_saved_params "2" )
+  i=0
+  while read line; do
+    userParams[$i]="$line"
+    (( i++ ))
+  done < <( get_saved_params "2" )
+  comp=${userParams[0]}
+  user=${userParams[1]}
+  psw=${userParams[2]}
+  psw2=${userParams[3]}
+
+  # locale
+  localesList=$( get_saved_params "3" | sed 's/^+//' | tr "\n" ", " | sed 's/,$//' )
+  defLocale=$( get_saved_params "3" | awk '/^+/{print $0}' | sed 's/^+//' )
+  # timezone
+  tz=$( get_saved_params "4" )
+  # bootloader
+  BOOT_DISK=$( get_saved_params "5" )
+  #if [ "$BOOT_DISK" = "0" ]; then
+    # install_grub
+  #fi
+  #--------------------------------
+
+  #--------------------------------
+  # BEGIN INSTALL
+  #--------------------------------
+  # ------ Try to mount new root ------
+  mount_new_root "${dev}" "/mnt"
+  RES=$?
+  if [ "$RES" -ne 0 ]; then
+    display_info "Failed to mount new root (errcode ${RES})"
+    return 3
+  fi
+
+  # ------ Copy files to new root ------
+  copy_to_new_root "/mnt"
+  RES=$?
+  if [ "$RES" -ne 0 ]; then
+    display_info "Failed to copy to new root"
+    return 4
+  fi
+
+  # ------ copy the kernel image to the new root ------
+  cp -vaT /run/archiso/bootmnt/arch/boot/$(uname -m)/vmlinuz /mnt/boot/vmlinuz-linux 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Copying kernel image..." \
+    --progressbox 10 70
+
+
+  # TODO: swap?
+
+  # ------ generate a fstab ------
+  genfstab -U "/mnt" > /mnt/etc/fstab 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Generating fstab..." \
+    --progressbox 10 70
+
+  # ------ Removing live environment trails ------
+  remove_live_trails "/mnt" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Removing live environment trails..." \
+    --progressbox 10 70
+
+  # ------ Create an initial ramdisk environment ------
+  arch-chroot "/mnt" mkinitcpio -p linux 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Creating an initial ramdisk environment..." \
+    --progressbox 10 70
+
+  # ------ Set personal information ------
+  arch-chroot "/mnt" set_user_params "${comp}" "${user}" "${psw}" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Setting personal information" \
+    --progressbox 10 70
+
+  # ------ Set language ------
+  arch-chroot "/mnt" set_lang_settings 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Setting up language" \
+    --progressbox 10 70
+
+  # ------ Installing bootloader ------
+  install_grub "/mnt" "${dev}" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Installing bootloader..." \
+    --progressbox 10 70
+
 }

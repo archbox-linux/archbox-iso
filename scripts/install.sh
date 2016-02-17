@@ -35,6 +35,7 @@ while true; do
     "4" "Timezone" \
     "5" "Bootloader" \
     "6" "Install" \
+    "7" "Reboot" \
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -77,6 +78,7 @@ while true; do
     3 )
       if [ $STEP -lt 3 ]; then continue; fi
       select_language "3"
+      RES=$?
       if [ $RES -eq 0 ]; then
         STEP=4
       fi
@@ -84,6 +86,7 @@ while true; do
     4 )
       if [ $STEP -lt 4 ]; then continue; fi
       select_timezone "4"
+      RES=$?
       if [ $RES -eq 0 ]; then
         TZ=$( get_saved_params "4" )
         if [ "s$TZ" != "s" ]; then
@@ -94,16 +97,23 @@ while true; do
     5 )
       if [ $STEP -lt 5 ]; then continue; fi
       select_bootloader "5"
+      #RES=$?
       #if [ $RES -eq 0 ]; then
         STEP=6
       #fi
       ;;
     6 )
       if [ $STEP -lt 6 ]; then continue; fi
-      confirm_install "5"
+      confirm_install
+      RES=$?
       if [ $RES -eq 0 ]; then
         do_install
+        STEP=0
       fi
+      ;;
+    7 )
+      if [ $STEP -gt 0 ]; then continue; fi
+      do_reboot
       ;;
   esac
 done
