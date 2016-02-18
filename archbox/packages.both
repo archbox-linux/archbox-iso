@@ -220,6 +220,8 @@ usb_modeswitch
 usbutils
 util-linux
 vi
+virtualbox-guest-modules
+virtualbox-guest-utils
 vlc
 volumeicon
 vpnc

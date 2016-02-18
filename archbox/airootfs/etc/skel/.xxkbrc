@@ -24,4 +24,4 @@ XXkb.mainwindow.image.1:	us.xpm
 XXkb.mainwindow.image.2:	ua.xpm
 XXkb.mainwindow.image.3:	ru.xpm
 XXkb.mainwindow.image.4:
-XXkb.image.path:		/home/glumoff/.icons/flags
+XXkb.image.path:		/usr/share/icons/flags

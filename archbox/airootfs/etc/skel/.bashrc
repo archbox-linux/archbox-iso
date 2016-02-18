@@ -2,8 +2,8 @@
 export EDITOR=nano
 export TERMINAL=sakura
 export BROWSER=firefox
-# Gtk themes 
+# Gtk themes
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
-alias ls='ls -la --color=auto'
+#alias ls='ls -la --color=auto'
 alias df='df -h'

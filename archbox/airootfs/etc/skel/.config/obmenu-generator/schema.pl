@@ -30,6 +30,7 @@ my $terminal = $CONFIG->{terminal};
 our $SCHEMA = [
 
     #          COMMAND                 LABEL                ICON
+    {item => ["$terminal --columns=130 --rows=45 -e sudo /opt/archbox/install.sh", 'Встановити Archbox', 'system-run']},
     {item => ['pcmanfm',        'Файловий менеджер',      'folder']},
     {item => ["$terminal",             'Термінал',          'terminal-tango']},
     {item => ['firefox',  'Firefox',       'firefox']},
