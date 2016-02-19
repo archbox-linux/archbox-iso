@@ -19,7 +19,7 @@ Arch Linux (x64_86), installed archiso, packages from base-devel group (?), yaou
 3. run build-customrepo.sh (as normal user)
     this will build all packages from AUR needed to include to iso (listed in packages-aur.lst) and add repo record to pacman.conf
     Hint: may need to enter root password for sudo
-    Warning! This needs to build it in a clean chroot (TODO: link here to archwiki about building in chroot) so will take quite a lot of disk space (TODO: write here real numbers!).
+    Warning! This needs to build it in a clean chroot (TODO: link here to archwiki about building in chroot) so will take quite a lot of disk space (~4Gb).
 
 4. run prepare-build.sh
     this change owner of profile dir to root and clean up work dir in case of iso rebuild
