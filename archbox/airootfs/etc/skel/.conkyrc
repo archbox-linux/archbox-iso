@@ -64,3 +64,4 @@ Super+c$alignr Move to Center
 Super+Arrow$alignr Move
 Alt+F3$alignr Dmenu
 Alt+Super+Arrow$alignr Resize
+${font}

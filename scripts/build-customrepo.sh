@@ -57,13 +57,13 @@ build_package_list() {
         #build package for 32bit arch
         makechrootpkg -r "$REPO_DIR/chroot/i686" -- -i || exit 1
         # move package to customrepo
-        find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/i686/" \;
+        #find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/i686/" \;
         echo "Finished building 32 bit package"
 
         #build package for 64bit arch
         makechrootpkg -r "$REPO_DIR/chroot/x86_64" -- -i || exit 1
         # move package to customrepo
-        find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/x86_64/" \;
+        #find "$REPO_DIR/build" -name "*.pkg.tar.xz" -exec mv {} "$REPO_DIR/x86_64/" \;
         echo "Finished building 64 bit package"
 
         echo "Return to build dir"
@@ -93,6 +93,16 @@ mkdir -p "$REPO_DIR/x86_64"
 
 build_package_list "packages-aur.lst"
 build_package_list "packages-local.lst"
+
+
+# copy packages to customrepo
+# *-i686.pkg.tar.xz - to i686
+# *-x86_64.pkg.tar.xz - to x86_64
+# *-any.pkg.tar.xz - to both i686 and x86_64
+find "$REPO_DIR/build" -name "*-i686.pkg.tar.xz" -exec cp {} "$REPO_DIR/i686/" \;
+find "$REPO_DIR/build" -name "*-x86_64.pkg.tar.xz" -exec cp {} "$REPO_DIR/x86_64/" \;
+find "$REPO_DIR/build" -name "*-any.pkg.tar.xz" -exec cp {} "$REPO_DIR/i686/" \;
+find "$REPO_DIR/build" -name "*-any.pkg.tar.xz" -exec cp {} "$REPO_DIR/x86_64/" \;
 
 # add packages to repo db
 cd "$REPO_DIR/i686/"

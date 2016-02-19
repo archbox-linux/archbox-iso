@@ -124,7 +124,12 @@ remove_live_trails() {
   # Remove installer
   rm -r "${NEWROOT_MOUNT_DIR}/opt/archbox"
 
-  # remove installer from obmenu
+  # remove installer from obmenu in profile skeleton
+  # sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
+  # and from obmenu in every user home
+  find "${NEWROOT_MOUNT_DIR}/home" "${NEWROOT_MOUNT_DIR}/etc/skel" -type f -wholename "*obmenu-generator/schema.pl" -exec sed '/\/opt\/archbox\/install.sh/d' {} \;
+
+
   sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
 
   # restore issue screen
@@ -467,28 +472,26 @@ do_install() {
     --progressbox 10 70
 
   # ------ Set personal information ------
-  arch-chroot "/mnt" $SCRIPT_DIR/include/set_user_params.sh "${comp}" "${user}" "${psw}" #2>&1 | dialog \
-  #  --backtitle "${BACKTITLE}" \
-  #  --title "Setting personal information" \
-  #  --progressbox 10 70
+  arch-chroot "/mnt" $SCRIPT_DIR/include/set_user_params.sh "${comp}" "${user}" "${psw}" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Setting personal information" \
+    --progressbox 10 70
 
   # ------ Set language ------
-  set_lang_settings "/mnt" "3" #2>&1 | dialog \
-  #  --backtitle "${BACKTITLE}" \
-  #  --title "Setting up language" \
-  #  --progressbox 10 70
+  set_lang_settings "/mnt" "3" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Setting up language" \
+    --progressbox 10 70
 
   # ------ Installing bootloader ------
-  install_grub "/mnt" "${dev}" #2>&1 | dialog \
-  #  --backtitle "${BACKTITLE}" \
-  #  --title "Installing bootloader..." \
-  #  --progressbox 10 70
+  install_grub "/mnt" "${dev}" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Installing bootloader..." \
+    --progressbox 10 70
 
   # ------ Removing live environment trails ------
-  remove_live_trails "/mnt" #2>&1 | dialog \
-  #  --backtitle "${BACKTITLE}" \
-  #  --title "Removing live environment trails..." \
-  #  --progressbox 10 70
-
-  exit
+  remove_live_trails "/mnt" 2>&1 | dialog \
+    --backtitle "${BACKTITLE}" \
+    --title "Removing live environment trails..." \
+    --progressbox 10 70
 }
