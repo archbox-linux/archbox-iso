@@ -109,6 +109,9 @@ remove_live_trails() {
   # remove live user
   userdel -rf --root "${NEWROOT_MOUNT_DIR}" "archbox"
 
+  # remove sudo passwordless priveleges
+  rm  "${NEWROOT_MOUNT_DIR}/etc/sudoers.d/99-wheel-nopassword"
+
   # Restore the configuration of journald:
   sed -i 's/Storage=volatile/#Storage=auto/' "${NEWROOT_MOUNT_DIR}/etc/systemd/journald.conf"
 
@@ -127,8 +130,7 @@ remove_live_trails() {
   # remove installer from obmenu in profile skeleton
   # sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
   # and from obmenu in every user home
-  find "${NEWROOT_MOUNT_DIR}/home" "${NEWROOT_MOUNT_DIR}/etc/skel" -type f -wholename "*obmenu-generator/schema.pl" -exec sed '/\/opt\/archbox\/install.sh/d' {} \;
-
+  find "${NEWROOT_MOUNT_DIR}/home" "${NEWROOT_MOUNT_DIR}/etc/skel" -type f -wholename "*obmenu-generator/schema.pl" -exec sed -i '/\/opt\/archbox\/install.sh/d' {} \;
 
   sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
 

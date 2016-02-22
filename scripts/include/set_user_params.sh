@@ -15,6 +15,8 @@ echo -n "${comp}" > "/etc/hostname"
 # set user password
 echo "$user:$psw" | chpasswd
 
+# add sudo run access for wheel
+echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/99-wheel
 
 # disable slim autologin
 sed -i "s/^default_user.*$/#default_user\t\t$user}/" /etc/slim.conf

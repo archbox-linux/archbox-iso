@@ -18,8 +18,8 @@ USER=archbox
 # set user password (same as username)
 echo "$USER:$USER" | chpasswd
 # add permissions to execute as root to wheel group (asking a password)
-! grep "^[[:space:]]*%wheel[[:space:]]ALL=(ALL)[[:space:]].*ALL" /etc/sudoers && echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-
+#! grep "^[[:space:]]*%wheel[[:space:]]ALL=(ALL)[[:space:]].*ALL" /etc/sudoers && echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99-wheel-nopassword
 
 sed -i 's/#\(PermitRootLogin \).\+/\1yes/' /etc/ssh/sshd_config
 sed -i "s/#Server/Server/g" /etc/pacman.d/mirrorlist
