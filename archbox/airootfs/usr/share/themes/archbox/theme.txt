@@ -1,0 +1,62 @@
+# Archbox GRUB2 theme
+# by Alexander Glumoff for Archbox Linux <http://archbox-linux.github.io/>
+
+#general settings
+title-text: ""
+desktop-image: "bg.png"
+desktop-color: "#287f32"
+message-font: "DejaVu Sans Regular 12"
+message-color: "#000"
+message-bg-color: "#fff"
+terminal-font: "DejaVu Sans Regular 12"
+
+#help bar at the bottom
++ label {
+	top = 100%-25
+	left = 0
+	width = 100%
+	height = 20
+	text = "@KEYMAP_MIDDLE@"
+	align = "center"
+	font = "DejaVu Sans Regular 10"
+	color = "#FFF"
+}
+
+#boot menu
++ boot_menu {
+	left = 30%
+	top = 32%
+	width = 62%
+	height = 47%	
+	item_font = "DejaVu Sans Regular 20"
+	item_color = "#fff"
+	selected_item_font = "DejaVu Sans Regular 20"
+	selected_item_color= "#deac7b"
+	selected_item_pixmap_style = "selected_*.png"
+	icon_height = 48
+	icon_width = 48
+	item_height = 48
+	item_padding = 5
+	item_icon_space = 10
+	item_spacing = 5
+	scrollbar = true
+	scrollbar_width = 20
+	menu_pixmap_style = ""
+	max_items_shown = 7
+}
+
+#progress bar
++ progress_bar {
+	id = "__timeout__"
+	left = 30%
+	top = 86%
+	height = 12
+	width = 40%
+	font = "DejaVu Sans Regular 10"
+	# text_color = "#000"
+	bg_color = #287f32
+	fg_color = #fff
+	border_color = #fff
+	show_text = false
+	text = ""
+}

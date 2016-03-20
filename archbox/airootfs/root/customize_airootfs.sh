@@ -33,3 +33,8 @@ systemctl enable pacman-init.service choose-mirror.service
 systemctl set-default graphical.target
 
 systemctl enable NetworkManager
+
+#customize grub theme (affects only target installed system - grub defaults will be copied while installing)
+#sed -i "/#GRUB_THEME=/d; s/^GRUB_THEME=.*$/GRUB_THEME=\"\/usr\/share\/themes\/archbox\/theme\.txt\"/" /etc/default/grub
+sed -i "/#*GRUB_THEME=/d" /etc/default/grub
+echo 'GRUB_THEME="/usr/share/themes/archbox/theme.txt"' >> /etc/default/grub
