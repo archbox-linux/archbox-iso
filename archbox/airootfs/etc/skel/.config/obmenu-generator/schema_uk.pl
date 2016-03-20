@@ -105,7 +105,8 @@ our $SCHEMA = [
             {item => ['obmenu',  'Openbox Menu Редактор', 'openbox']},
         {end_cat => undef},
 
-	{item => ['plank --preferences',              'Налаштування Plank',    'plank']},
+	{item => ['plank --preferences',   'Налаштування Plank',    'plank']},
+    {item => ['nitrogen',              'Налаштування обкладинки',    'nitrogen']},
 
     {end_cat => undef},
     {sep => undef},

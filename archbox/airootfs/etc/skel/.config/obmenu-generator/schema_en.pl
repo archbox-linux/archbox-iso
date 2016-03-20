@@ -35,7 +35,7 @@ our $SCHEMA = [
     {item => ["$terminal",             'Terminal',          'terminal-tango']},
     {item => ['firefox',  'Firefox',       'firefox']},
     {item => ['chromium',  'Chromium',       'chromium']},
-    {item => ['gmrun',             'Запустити...',       'system-run']},
+    {item => ['gmrun',             'Run...',       'system-run']},
     #{item => ['mount /mnt/sheibe', 'Підключити sheibe',   'yellow-network']},
     #{item => ['umount /mnt/sheibe', 'Відключити sheibe',  'grey-network']},
 
@@ -105,7 +105,8 @@ our $SCHEMA = [
             {item => ['obmenu',  'Openbox Menu Editor', 'openbox']},
         {end_cat => undef},
 
-	{item => ['plank --preferences',              'Plank configuration',    'plank']},
+    {item => ['plank --preferences',   'Plank configuration',     'plank']},
+    {item => ['nitrogen',              'Wallpaper configuration', 'nitrogen']},
 
     {end_cat => undef},
     {sep => undef},

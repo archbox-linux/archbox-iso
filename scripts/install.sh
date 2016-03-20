@@ -55,7 +55,7 @@ while true; do
       echo "Installation terminated."
       ;;
     1 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       select_device "${STEP}"
       ROOT_DEV=$( get_saved_params "1" )
       if [ "s$ROOT_DEV" = "s" ]; then
@@ -65,7 +65,7 @@ while true; do
       STEP=2
       ;;
     2 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       if [ $STEP -lt 2 ]; then continue; fi
       select_user_params "2"
       RES=$?
@@ -76,7 +76,7 @@ while true; do
       fi
       ;;
     3 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       if [ $STEP -lt 3 ]; then continue; fi
       select_language "3"
       RES=$?
@@ -85,7 +85,7 @@ while true; do
       fi
       ;;
     4 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       if [ $STEP -lt 4 ]; then continue; fi
       select_timezone "4"
       RES=$?
@@ -97,7 +97,7 @@ while true; do
       fi
       ;;
     5 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       if [ $STEP -lt 5 ]; then continue; fi
       select_bootloader "5"
       #RES=$?
@@ -106,17 +106,17 @@ while true; do
       #fi
       ;;
     6 )
-      if [ $STEP -eq 0 ]; then continue; fi
+      #if [ $STEP -eq 0 ]; then continue; fi
       if [ $STEP -lt 6 ]; then continue; fi
       confirm_install
       RES=$?
       if [ $RES -eq 0 ]; then
         do_install
-        STEP=0
+        STEP=7
       fi
       ;;
     7 )
-      if [ $STEP -gt 0 ]; then continue; fi
+      if [ $STEP -lt 7 ]; then continue; fi
       do_reboot
       ;;
   esac
