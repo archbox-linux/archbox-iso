@@ -140,4 +140,7 @@ SigLevel = Optional TrustAll\
 Server = file://'"${REPO_DIR}"'/$arch\
 ' ./archbox/pacman.conf
 
+# delete from global pacman's cache all built packages
+cat packages-aur.lst packages-local.lst | xargs -I{} find /var/cache/pacman/pkg/ -name "*{}*" | xargs rm
+
 echo "DONE!"

@@ -42,7 +42,7 @@ mount_new_root() {
   NEWROOT_MOUNT_DIR=$2
 
   # try to umount
-  umount "${NEWROOT_DEV}"
+  umount "${NEWROOT_DEV}" 2>/dev/null
 
 
   # check if newroot already mounted
@@ -130,7 +130,7 @@ remove_live_trails() {
   # remove installer from obmenu in profile skeleton
   # sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
   # and from obmenu in every user home
-  find "${NEWROOT_MOUNT_DIR}/home" "${NEWROOT_MOUNT_DIR}/etc/skel" -type f -wholename "*obmenu-generator/schema.pl" -exec sed -i '/\/opt\/archbox\/install.sh/d' {} \;
+  find "${NEWROOT_MOUNT_DIR}/home" "${NEWROOT_MOUNT_DIR}/etc/skel" -type f -wholename "*obmenu-generator/schema*.pl" -exec sed -i '/\/opt\/archbox\/install.sh/d' {} \;
 
   sed -i '/\/opt\/archbox\/install.sh/d' "${NEWROOT_MOUNT_DIR}/etc/skel/.config/obmenu-generator/schema.pl"
 
@@ -352,7 +352,7 @@ Do you want to proceed with install?"
 }
 
 confirm_install() {
-  MSG_TEXT="$( format_all_params )"
+  local MSG_TEXT="$( format_all_params )"
   dialog \
     --backtitle "${BACKTITLE}" \
     --no-collapse \
@@ -367,8 +367,8 @@ do_reboot() {
     --backtitle "${BACKTITLE}" \
     --no-collapse \
     --cr-wrap \
-    --title "Reboot now?" \
-    --yesno "${MSG_TEXT}" 0 0
+    --title "Reboot" \
+    --yesno "Do you want to reboot now?" 0 0
   if [ $? -eq 0 ]; then
     reboot
   fi
