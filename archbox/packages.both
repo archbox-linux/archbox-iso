@@ -139,6 +139,9 @@ nbd
 ncdu
 netctl
 networkmanager
+networkmanager-openconnect
+networkmanager-openvpn
+networkmanager-vpnc
 network-manager-applet
 nfs-utils
 nilfs-utils
@@ -155,7 +158,6 @@ openconnect
 openssh
 openvpn
 os-prober
-oxygen-cursors
 p7zip
 pacman
 partclone
@@ -221,7 +223,7 @@ usb_modeswitch
 usbutils
 util-linux
 vi
-virtualbox-guest-modules
+virtualbox-guest-dkms
 virtualbox-guest-utils
 vlc
 volumeicon
@@ -287,3 +289,4 @@ pamac-aur
 perl-linux-desktopfiles
 plank-theme-numix
 yaourt
+xcursor-oxygen
