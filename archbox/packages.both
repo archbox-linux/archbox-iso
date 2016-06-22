@@ -116,6 +116,7 @@ linux
 linux-atm
 logrotate
 lsb-release
+lsscsi
 lvm2
 lxappearance
 lxappearance-obconf
@@ -137,6 +138,7 @@ mtr
 nano
 nbd
 ncdu
+ndisc6
 netctl
 networkmanager
 networkmanager-openconnect
@@ -174,7 +176,6 @@ plank
 polkit
 ppp
 pptpclient
-prebootloader
 procps-ng
 psi
 psi-i18n
@@ -182,6 +183,8 @@ psmisc
 pv
 pyqt4-common
 python-pyqt4
+python-xdg
+python2-xdg
 qt4
 refind-efi
 reiserfsprogs
@@ -190,7 +193,9 @@ rfkill
 rp-pppoe
 rsync
 sakura
+sdparm
 sed
+sg3_utils
 shadow
 shutter
 simple-scan
@@ -222,7 +227,7 @@ unzip
 usb_modeswitch
 usbutils
 util-linux
-vi
+vim-minimal
 virtualbox-guest-dkms
 virtualbox-guest-utils
 vlc
