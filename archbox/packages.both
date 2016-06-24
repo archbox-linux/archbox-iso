@@ -21,7 +21,6 @@ chromium
 cifs-utils
 clipit
 clonezilla
-conky
 coreutils
 crda
 cryptsetup
@@ -115,6 +114,7 @@ libzip
 licenses
 linux
 linux-atm
+linux-headers
 logrotate
 lsb-release
 lsscsi
@@ -285,6 +285,7 @@ xxkb
 zd1211-firmware
 zip
 compton
+conky-git
 numix-icon-theme-git
 numix-themes-green
 numix-themes-hreen

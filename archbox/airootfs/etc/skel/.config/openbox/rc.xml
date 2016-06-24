@@ -366,15 +366,6 @@ cases. -->
     <keybind key="W-v">
       <action name="ToggleMaximizeVert"/>
     </keybind>
-    <keybind key="W-r">
-      <action name="Execute">
-        <command>update_doc</command>
-        <startupnotify>
-          <enabled>yes</enabled>
-          <name>DOC</name>
-        </startupnotify>
-      </action>
-    </keybind>
     <keybind key="W-space">
       <action name="ShowMenu">
         <menu>root-menu</menu>
