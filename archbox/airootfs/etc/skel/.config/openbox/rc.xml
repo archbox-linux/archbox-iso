@@ -175,19 +175,44 @@ cases. -->
         <wrap>no</wrap>
       </action>
     </keybind>
+    <keybind key="C-A-Delete">
+      <action name="Execute">
+        <command>oblogout</command>
+      </action>
+    </keybind>
+    <keybind key="0xDA">
+      <action name="Execute">
+        <command>/home/bin/deepin-screenshot -f</command>
+      </action>
+    </keybind>
+    <keybind key="A-0xDA">
+      <action name="Execute">
+        <command>/home/bin/deepin-screenshot -w -p window</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-0xDA">
+      <action name="Execute">
+        <command>/home/bin/deepin-screenshot</command>
+      </action>
+    </keybind>
     <keybind key="Print">
       <action name="Execute">
-        <command>shutter --full</command>
+        <command>/home/bin/deepin-screenshot -f</command>
+      </action>
+    </keybind>
+    <keybind key="A-Print">
+      <action name="Execute">
+        <command>/home/bin/deepin-screenshot -w -p window</command>
+      </action>
+    </keybind>
+    <keybind key="C-A-Print">
+      <action name="Execute">
+        <command>/home/bin/deepin-screenshot</command>
       </action>
     </keybind>
     <keybind key="XF86PowerOff">
       <action name="Execute">
         <command>systemctl poweroff</command>
-      </action>
-    </keybind>
-    <keybind key="A-Print">
-      <action name="Execute">
-        <command>shutter --active</command>
       </action>
     </keybind>
     <keybind key="W-S-Left">
@@ -247,16 +272,6 @@ cases. -->
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="S-A-Up">
-      <action name="SendToDesktopUp">
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="S-A-Down">
-      <action name="SendToDesktopDown">
-        <wrap>no</wrap>
-      </action>
-    </keybind>
     <keybind key="W-F1">
       <action name="Desktop"/>
     </keybind>
@@ -285,11 +300,6 @@ cases. -->
     </keybind>
     <keybind key="A-F4">
       <action name="Close"/>
-    </keybind>
-    <keybind key="A-F3">
-      <action name="Execute">
-        <command>~/.config/dmenu/dmenu-bind.sh</command>
-      </action>
     </keybind>
     <keybind key="A-F2">
       <action name="Execute">
@@ -347,7 +357,7 @@ cases. -->
     </keybind>
     <keybind key="W-f">
       <action name="Execute">
-        <command>spacefm</command>
+        <command>pcmanfm</command>
         <startupnotify>
           <enabled>yes</enabled>
           <name>File Manager</name>

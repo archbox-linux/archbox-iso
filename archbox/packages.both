@@ -15,11 +15,11 @@ bash-completion
 bind-tools
 binutils
 bison
+brasero
 btrfs-progs
 bzip2
 chromium
 cifs-utils
-clipit
 clonezilla
 coreutils
 crda
@@ -30,6 +30,7 @@ darkhttpd
 davfs2
 ddrescue
 deadbeef
+deepin-screenshot
 device-mapper
 dhclient
 dhcpcd
@@ -38,7 +39,6 @@ diffutils
 dmenu
 dmraid
 dnsmasq
-dnsutils
 dosfstools
 doublecmd-gtk2
 e2fsprogs
@@ -68,6 +68,7 @@ git
 glibc
 glsof
 gmrun
+gnome-font-viewer
 gnome-keyring
 gnu-netcat
 gparted
@@ -79,6 +80,7 @@ grml-zsh-config
 grub
 gsimplecal
 gthumb
+gtk3-print-backends
 gvfs-mtp
 gvfs-nfs
 gvfs-smb
@@ -106,8 +108,8 @@ libgnome-keyring
 libmad
 libnfs
 libqtxdg
-libreoffice-still
-libreoffice-still-uk
+libreoffice-fresh
+libreoffice-fresh-uk
 libsecret
 libtool
 libzip
@@ -152,7 +154,7 @@ nitrogen
 nmap
 ntfs-3g
 ntp
-numix-themes
+numix-gtk-theme
 obconf
 oblogout
 openbox
@@ -198,7 +200,6 @@ sdparm
 sed
 sg3_utils
 shadow
-shutter
 simple-scan
 slim
 slim-themes
@@ -228,7 +229,7 @@ unzip
 usb_modeswitch
 usbutils
 util-linux
-vim-minimal
+vim
 virtualbox-guest-dkms
 virtualbox-guest-utils
 vlc
@@ -247,29 +248,16 @@ xarchiver
 xdg-user-dirs
 xdg-utils
 xf86-input-evdev
-xf86-input-joystick
 xf86-input-keyboard
 xf86-input-mouse
 xf86-input-synaptics
 xf86-input-void
-xf86-video-ark
 xf86-video-ati
 xf86-video-dummy
 xf86-video-fbdev
-xf86-video-glint
-xf86-video-i128
 xf86-video-intel
-xf86-video-mach64
-xf86-video-neomagic
 xf86-video-nouveau
-xf86-video-nv
 xf86-video-openchrome
-xf86-video-r128
-xf86-video-savage
-xf86-video-siliconmotion
-xf86-video-sis
-xf86-video-tdfx
-xf86-video-trident
 xf86-video-vesa
 xf86-video-voodoo
 xfce4-notifyd
@@ -297,3 +285,4 @@ perl-linux-desktopfiles
 plank-theme-numix
 yaourt
 xcursor-oxygen
+clipit

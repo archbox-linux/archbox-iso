@@ -3,9 +3,6 @@ compton --config ~/.config/compton.conf &
 # panel
 (sleep 1s && tint2) &
 
-# Set wallpaper
-nitrogen --restore &
-
 plank &
 
 # Enable as required
@@ -31,3 +28,6 @@ sleep 1 ; xxkb &
 /usr/bin/lxpolkit &
 
 /usr/bin/pamac-tray &
+
+# Set wallpaper
+(sleep 5 && nitrogen --restore) &

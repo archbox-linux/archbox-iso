@@ -39,7 +39,7 @@ our $SCHEMA = [
     #{item => ['mount /mnt/sheibe', 'Підключити sheibe',   'yellow-network']},
     #{item => ['umount /mnt/sheibe', 'Відключити sheibe',  'grey-network']},
 
-    {sep => 'Категорії'},
+    {sep => 'Categories'},
 
     #          NAME            LABEL                ICON
     {cat => ['utility',     'Utilities', 'applications-utilities']},
@@ -102,7 +102,7 @@ our $SCHEMA = [
             {item => ["$editor ~/.config/openbox/autostart", 'Openbox Autostart',   'shellscript']},
             {item => ["$editor ~/.config/openbox/rc.xml",    'Openbox RC',          'text-xml']},
             {item => ["$editor ~/.config/openbox/menu.xml",  'Openbox Menu',        'text-xml']},
-            {item => ['obmenu',  'Openbox Menu Editor', 'openbox']},
+            {item => ['obkey',  'Openbox Keyboard shortcuts', 'openbox']},
         {end_cat => undef},
 
     {item => ['plank --preferences',   'Plank configuration',     'plank']},

@@ -38,3 +38,8 @@ systemctl enable NetworkManager
 #sed -i "/#GRUB_THEME=/d; s/^GRUB_THEME=.*$/GRUB_THEME=\"\/usr\/share\/themes\/archbox\/theme\.txt\"/" /etc/default/grub
 sed -i "/#*GRUB_THEME=/d" /etc/default/grub
 echo 'GRUB_THEME="/usr/share/themes/archbox/theme.txt"' >> /etc/default/grub
+
+# fix lxpolkit invisible char
+sed -i -E "s/(<property[^>]+invisible_char[^>]*>).*(<\/property>)/\1•\2/" /usr/share/lxsession/ui/lxpolkit.ui
+# fix freetype subpixel settings
+sed -i -E -e "s/(FREETYPE_PROPERTIES=).*/\1\"truetype:interpreter-version=35\"/" -e "s/#(.*FREETYPE_PROPERTIES=.*)/\1/g" /etc/profile.d/freetype2.sh

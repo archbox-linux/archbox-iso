@@ -486,10 +486,12 @@ do_install() {
     --progressbox 10 70
 
   # ------ Installing bootloader ------
-  install_grub "/mnt" "${dev}" 2>&1 | dialog \
-    --backtitle "${BACKTITLE}" \
-    --title "Installing bootloader..." \
-    --progressbox 10 70
+  if [ "$BOOT_DISK" != "0" ]; then
+    install_grub "/mnt" "${dev}" 2>&1 | dialog \
+      --backtitle "${BACKTITLE}" \
+      --title "Installing bootloader..." \
+      --progressbox 10 70
+  fi
 
   # ------ Removing live environment trails ------
   remove_live_trails "/mnt" 2>&1 | dialog \

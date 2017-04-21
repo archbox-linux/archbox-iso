@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# A deepin-screenshot wrapper
+# to automate file saving
+
+while [[ $# -gt 0 ]]
+do
+key="$1"
+case $key in
+    -f|--fullscreen)
+    SOURCE="--fullscreen"
+    ;;
+    -w|--top-window)
+    SOURCE="--top-window"
+    ;;
+    -d|--delay)
+    DELAY="$2"
+    shift # past argument
+    ;;
+    -p|--prefix)
+    PREFIX="${2:-screen}"
+    shift # past argument
+    ;;
+esac
+shift # past argument or value
+done
+
+DELAY="--delay ${DELAY:-0}"
+PREFIX="${PREFIX:-screen}"
+
+# get user pictures dir path
+SAVE_PATH=$(grep -oP "(?<=^XDG_PICTURES_DIR=\")[^\"]+" ~/.config/user-dirs.dirs)
+
+# remove unsafe for eval chars 
+SAVE_PATH="${SAVE_PATH//;/}"
+SAVE_PATH="${SAVE_PATH// /}"
+SAVE_PATH="${SAVE_PATH//&/}"
+SAVE_PATH="${SAVE_PATH//|/}"
+
+SAVE_PATH="$(eval cd "$SAVE_PATH" 2>/dev/null ; pwd)/${PREFIX}_$(date +%Y-%m-%d_%H%M%S).png"
+
+deepin-screenshot $SOURCE $DELAY --save-path="$SAVE_PATH"

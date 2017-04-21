@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DE=openbox
+#export DE=openbox
 
 includes=/etc/X11/xinit/xinitrc.d
 if [ -d "$includes" ]; then

@@ -102,7 +102,7 @@ our $SCHEMA = [
             {item => ["$editor ~/.config/openbox/autostart", 'Openbox Autostart',   'shellscript']},
             {item => ["$editor ~/.config/openbox/rc.xml",    'Openbox RC',          'text-xml']},
             {item => ["$editor ~/.config/openbox/menu.xml",  'Openbox Menu',        'text-xml']},
-            {item => ['obmenu',  'Openbox Menu Редактор', 'openbox']},
+            {item => ['obkey',  'Клавіатурні скорочення Openbox', 'openbox']},
         {end_cat => undef},
 
 	{item => ['plank --preferences',   'Налаштування Plank',    'plank']},
